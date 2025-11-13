@@ -8,15 +8,18 @@
 #include "app.h"         // <= Su propia cabecera (opcional)
 #include "sapi.h"        // <= Biblioteca sAPI
 
-int main( void )
-{
-        // Inicializar y configurar la placa de desarrollo
-        boardConfig();
+int main(void) {
 
-        while( TRUE ) {
-                gpioWrite( CIAA_BOARD_LED, 1 );
-                delay(1000);
-                gpioWrite( CIAA_BOARD_LED, 0 );
-                delay(1000);
-        }
+   boardConfig();
+   uartConfig(UART_USB, 115200);
+
+   char c;
+
+   while(1) {
+      if (uartReadByte(UART_USB, (uint8_t*)&c)) {
+         uartWriteByte(UART_USB, c);
+      }
+   }
+
+   return 0;
 }
